@@ -33,7 +33,8 @@ $plugins = @(
   @{ repo = 'blader/humanizer';                      id = 'humanizer@humanizer' },
   @{ repo = 'leonxlnx/taste-skill';                  id = 'taste-skill@taste-skill' },
   @{ repo = 'mattpocock/skills';                     id = 'mattpocock-skills@mattpocock' },
-  @{ repo = 'longmaba/no-limit';                     id = 'no-limit@longmaba-mods' }
+  @{ repo = 'longmaba/no-limit';                     id = 'no-limit@longmaba-mods' },
+  @{ repo = 'AgriciDaniel/claude-seo';               id = 'claude-seo@agricidaniel-claude-seo' }
 )
 foreach ($p in $plugins) {
   claude plugin marketplace add $p.repo

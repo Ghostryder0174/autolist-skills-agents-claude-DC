@@ -18,6 +18,7 @@ Prérequis : Git, Node.js et Claude Code installés, Claude Code connecté au co
 | taste-skill | github.com/leonxlnx/taste-skill | Design de sites web haut de gamme |
 | mattpocock-skills | github.com/mattpocock/skills | Ingénierie : TDD, diagnostic de bugs, revue, spec, PR... |
 | no-limit | github.com/longmaba/no-limit | Plugin déjà présent sur la machine d'origine |
+| claude-seo | github.com/AgriciDaniel/claude-seo | SEO complet : 29 sous-skills et 20 agents (technique, contenu, schema, Core Web Vitals, local, GEO/IA...). Après install, lancer `/seo setup` une fois (Python 3.11+) |
 
 ## Synchronisés avec le compte claude.ai (rien à installer)
 
