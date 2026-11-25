@@ -34,7 +34,13 @@ $plugins = @(
   @{ repo = 'leonxlnx/taste-skill';                  id = 'taste-skill@taste-skill' },
   @{ repo = 'mattpocock/skills';                     id = 'mattpocock-skills@mattpocock' },
   @{ repo = 'longmaba/no-limit';                     id = 'no-limit@longmaba-mods' },
-  @{ repo = 'AgriciDaniel/claude-seo';               id = 'claude-seo@agricidaniel-claude-seo' }
+  @{ repo = 'AgriciDaniel/claude-seo';               id = 'claude-seo@agricidaniel-claude-seo' },
+  @{ repo = 'forrestchang/andrej-karpathy-skills';   id = 'andrej-karpathy-skills@karpathy-skills' },
+  @{ repo = 'ayghri/i-have-adhd';                    id = 'i-have-adhd@i-have-adhd' },
+  @{ repo = 'DietrichGebert/ponytail';               id = 'ponytail@ponytail' },
+  @{ repo = 'obra/superpowers-marketplace';          id = 'superpowers@superpowers-marketplace' },
+  @{ repo = 'heydamir/unslop';                       id = 'unslop@heydamir' },
+  @{ repo = 'affaan-m/ECC';                          id = 'ecc@ecc' }
 )
 foreach ($p in $plugins) {
   claude plugin marketplace add $p.repo
@@ -57,6 +63,35 @@ foreach ($src in @("$Tmp\emil\skills", "$Tmp\vercel\skills")) {
 Step 'Playwright CLI'
 npm install -g @playwright/cli@latest
 Push-Location $env:USERPROFILE; playwright-cli install --skills; Pop-Location
+
+# 3b. Outils en ligne de commande (sans API payante)
+Step 'Outils CLI : SkillSpector, graphify, agent-reach, agent-desktop, obscura'
+if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
+  winget install --id astral-sh.uv -e --accept-source-agreements --accept-package-agreements --silent
+  $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')
+}
+# Bloque tout usage d'API payante et la télémétrie
+[Environment]::SetEnvironmentVariable('GRAPHIFY_BACKEND', 'none', 'User'); $env:GRAPHIFY_BACKEND = 'none'
+[Environment]::SetEnvironmentVariable('SUPERPOWERS_DISABLE_TELEMETRY', '1', 'User')
+uv tool install --python 3.13 'skillspector[mcp] @ git+https://github.com/NVIDIA/skillspector.git'   # toujours lancer avec --no-llm
+uv tool install graphifyy
+graphify install
+uv tool install https://github.com/Panniantong/Agent-Reach/releases/latest/download/agent-reach.zip   # pas le paquet PyPI du même nom
+agent-reach setup
+npm install -g --allow-scripts=agent-desktop agent-desktop
+git clone -q --depth 1 https://github.com/vercel-labs/agent-desktop.git "$Tmp\agent-desktop"
+foreach ($n in @('agent-desktop', 'agent-desktop-windows')) { Copy-Item "$Tmp\agent-desktop\skills\$n" (Join-Path $Skills $n) -Recurse -Force; Write-Host "  + $n" }
+# obscura : binaire Windows officiel, empreinte SHA-256 vérifiée (manifeste scoop v0.2.7)
+$oz = "$Tmp\obscura.zip"
+Invoke-WebRequest https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.7/obscura-x86_64-windows.zip -OutFile $oz
+if ((Get-FileHash $oz -Algorithm SHA256).Hash.ToLower() -eq 'be983b663552e11faf8c1e07696578bad622dbeb48afb9f59036032ca8e97fb3') {
+  $bin = Join-Path $env:USERPROFILE '.local\bin'; New-Item -ItemType Directory -Force $bin | Out-Null
+  Expand-Archive $oz "$Tmp\obscura" -Force
+  Get-ChildItem -Recurse "$Tmp\obscura" -Filter *.exe | Copy-Item -Destination $bin -Force
+  git clone -q --depth 1 https://github.com/h4ckf0r0day/obscura.git "$Tmp\obscura-src"
+  Copy-Item "$Tmp\obscura-src\skills\obscura" (Join-Path $Skills 'obscura') -Recurse -Force
+  Write-Host '  + obscura'
+} else { Write-Host '  obscura : empreinte incorrecte, installation annulée' -ForegroundColor Red }
 
 # 4. Skills maison (gestionnaire DC, pont CSO) et bibliothèque DESIGN.md
 Step 'Skills maison et DESIGN.md'

@@ -19,6 +19,12 @@ Prérequis : Git, Node.js et Claude Code installés, Claude Code connecté au co
 | mattpocock-skills | github.com/mattpocock/skills | Ingénierie : TDD, diagnostic de bugs, revue, spec, PR... |
 | no-limit | github.com/longmaba/no-limit | Plugin déjà présent sur la machine d'origine |
 | claude-seo | github.com/AgriciDaniel/claude-seo | SEO complet : 29 sous-skills et 20 agents (technique, contenu, schema, Core Web Vitals, local, GEO/IA...). Après install, lancer `/seo setup` une fois (Python 3.11+) |
+| andrej-karpathy-skills | github.com/forrestchang/andrej-karpathy-skills | Règles tirées des remarques d'Andrej Karpathy sur les erreurs de code des LLM |
+| i-have-adhd | github.com/ayghri/i-have-adhd | Réponses faciles à lire (format adapté au TDAH, utile pour tous) |
+| ponytail | github.com/DietrichGebert/ponytail | Posture « senior dev paresseux » : moins de code, audit, revue, dette technique, suivi du coût par tâche. Webhook laissé vide : rien ne sort de la machine |
+| superpowers | github.com/obra/superpowers | Méthode de travail : brainstorming, plan, TDD, sous-agents. Télémétrie coupée (`SUPERPOWERS_DISABLE_TELEMETRY=1`) |
+| unslop | github.com/heydamir/unslop | Transforme une interface « générée par IA » en design avec du caractère |
+| ecc | github.com/affaan-m/ECC | Gros pack d'agents, skills, commandes et hooks qualité. Appelle parfois Haiku (forfait) |
 
 ## Synchronisés avec le compte claude.ai (rien à installer)
 
@@ -33,6 +39,22 @@ Ils arrivent tout seuls dès que Claude Code est connecté au compte de l'organi
 - **Emil Kowalski** (github.com/emilkowalski/skills), 20 skills : animate, animate-expo, animation-performance, animation-vocabulary, apple-design, ask-emil, ask-sonner, break-ui, choreograph, emil-design-eng, find-animation-opportunities, gestures, improve-animations, learn-taste, mobile-native, pick-ui-library, prototype, remove-animations, review-animations, write-swift
 - **Vercel** (github.com/vercel-labs/agent-skills), 9 skills : composition-patterns, deploy-to-vercel, react-best-practices, react-native-skills, react-view-transitions, vercel-cli-with-tokens, vercel-optimize, web-design-guidelines, writing-guidelines
 - **Playwright CLI** (npm `@playwright/cli`) : skill playwright-cli
+
+## Outils en ligne de commande (installés par `install.ps1`)
+
+Règle : aucune API payante. Aucune clé (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GROQ_API_KEY`...) n'est configurée.
+
+- **uv** (winget `astral-sh.uv`) : installe les outils Python ci-dessous.
+- **SkillSpector** (NVIDIA) : scanner de sécurité de skills. Toujours lancer `skillspector scan <chemin> --no-llm`.
+- **graphify** : transforme un projet en graphe de connaissances. `GRAPHIFY_BACKEND=none` est posé pour qu'il n'utilise jamais une clé API.
+- **agent-reach** : lecture de GitHub, YouTube, Reddit, web... Installé depuis GitHub (le paquet PyPI du même nom n'est pas le bon). Ne pas ajouter `xiaoyuzhou` (clé Groq payante).
+- **agent-desktop** (Vercel, npm) : pilote les applications du bureau Windows. Skills `agent-desktop` et `agent-desktop-windows`.
+- **obscura** : navigateur headless (binaire Windows officiel, empreinte SHA-256 vérifiée) et son skill.
+
+## Refusés après audit de sécurité
+
+- **claude-octopus** : lit et réécrit le jeton de connexion Claude, peut utiliser des clés API payantes.
+- **claude-mem** : appelle Haiku après chaque action (forte conso du forfait), télémétrie et mise à jour automatique actives par défaut.
 
 ## gstack (option `-WithGstack`)
 
